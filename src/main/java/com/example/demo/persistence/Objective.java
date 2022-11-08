@@ -1,18 +1,26 @@
-package com.example.demo;
+package com.example.demo.persistence;
 
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+@Entity
+@Table(name = "OBJECTIVE")
+public class Objective {
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ObjectiveDto {
+    @Id
+    @GeneratedValue
     private Long id;
-    private String title;
-    private String description;
-    private String submittedBy;
-    private LocalDateTime submittedAt;
 
-    private String error;
+    private String title;
+
+    private String description;
+
+    private String submittedBy;
+
+    public Objective() {
+    }
 
     public Long getId() {
         return id;
@@ -44,21 +52,5 @@ public class ObjectiveDto {
 
     public void setSubmittedBy(final String submittedBy) {
         this.submittedBy = submittedBy;
-    }
-
-    public LocalDateTime getSubmittedAt() {
-        return submittedAt;
-    }
-
-    public void setSubmittedAt(final LocalDateTime submittedAt) {
-        this.submittedAt = submittedAt;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(final String error) {
-        this.error = error;
     }
 }
