@@ -1,11 +1,12 @@
 package com.example.demo.presentation;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 import com.example.demo.CreateObjectiveDto;
 import com.example.demo.ObjectiveDto;
 import com.example.demo.persistence.Objective;
 import com.example.demo.persistence.ObjectiveRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,19 +48,21 @@ public class ObjectiveController {
     @GetMapping("/{objectiveId}")
     //127.0.0.1:8080/objectives/1
     public ResponseEntity<ObjectiveDto> getObjectiveById(@PathVariable("objectiveId") Long id) {
-        if (id == 1) {
-            ObjectiveDto dto = new ObjectiveDto();
-            dto.setError("The objective with id 1 is not found");
-            return ResponseEntity.status(404).body(dto);
+
+        final Optional<Objective> objectiveOptional = objectiveRepository.findById(id);
+
+        if (objectiveOptional.isEmpty()) {
+            final ObjectiveDto dto = new ObjectiveDto();
+            dto.setError("The objective with id " + id + " is not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(dto);
         }
 
-        ObjectiveDto dto = new ObjectiveDto();
-        dto.setId(id);
-        dto.setTitle("Increase code coverage");
-        dto.setDescription("Write new unit tests to incerase the code coverage");
-        dto.setSubmittedBy("aua student");
-        dto.setSubmittedAt(LocalDateTime.now());
-        dto.setError(null);
+        final Objective objective = objectiveOptional.get();
+
+        final ObjectiveDto dto = new ObjectiveDto();
+        dto.setId(objective.getId());
+        dto.setTitle(objective.getTitle());
+        dto.setDescription(objective.getDescription());
         return ResponseEntity.ok(dto);
     }
 
