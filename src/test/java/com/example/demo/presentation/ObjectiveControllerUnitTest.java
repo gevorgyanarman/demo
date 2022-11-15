@@ -244,4 +244,9 @@ class ObjectiveControllerUnitTest {
         Assertions.assertThat(result.getBody().getDescription())
             .isEqualTo("Write new unit tests to increase the coverage");
     }
+
+    @Test
+    void failingTest() {
+        Assertions.assertThat(1).isEqualTo(2);
+    }
 }
